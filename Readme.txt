@@ -18,3 +18,5 @@ What Languages is used in?
 
 React,Node,Express,JS
 DB : MongoDB, Mongoose
+
+other : JWT,Bcrypt,axios,react-cookie,react-router-dom,tailwindcss,cors
