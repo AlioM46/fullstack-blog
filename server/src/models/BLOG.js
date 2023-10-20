@@ -7,7 +7,6 @@ const PostSchema = mongoose.Schema({
   images: [String],
   categories: [{type: String, lowercase: true}],
   likes: Number,
-  comments: [String],
   postOwner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

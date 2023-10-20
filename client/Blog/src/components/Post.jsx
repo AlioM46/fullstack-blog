@@ -20,6 +20,7 @@ const Post = ({post, setPosts}) => {
     }
   };
 
+  console.log(post);
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -150,7 +151,7 @@ const Post = ({post, setPosts}) => {
                 alt="user image Profile."
               />
               <a
-                href={`/user/${userId}`}
+                href={`/user/${item.postOwner}`}
                 className="flex items-center font-bold text-2xl"
               >
                 View Profile

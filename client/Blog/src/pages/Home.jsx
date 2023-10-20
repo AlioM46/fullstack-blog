@@ -19,16 +19,18 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 py-14 px-4">
-      {posts.map((item, index) => {
-        return (
-          <Post
-            showVisitPostButton={true}
-            key={index}
-            post={[item]}
-            setPosts={setPosts}
-          />
-        );
-      })}
+      {posts.length > 0
+        ? posts.map((item, index) => {
+            return (
+              <Post
+                showVisitPostButton={true}
+                key={index}
+                post={[item]}
+                setPosts={setPosts}
+              />
+            );
+          })
+        : ""}
     </div>
   );
 };

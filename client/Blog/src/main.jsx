@@ -10,7 +10,6 @@ import Categories from "./pages/Categories.jsx";
 import PostPage from "./pages/PostPage.jsx";
 import EditPage from "./pages/EditPage.jsx";
 import ProfileUsers from "./pages/ProfileUsers.jsx";
-import {Provider} from "react-redux";
 
 const router = createBrowserRouter([
   {path: "/", element: <Home />},

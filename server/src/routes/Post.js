@@ -4,6 +4,7 @@ const CreatePost = require("../controllers/CreatePost.js");
 const RemovePost = require("../controllers/RemovePost.js");
 const PostModel = require("../models/BLOG.js");
 const UserModel = require("../models/USER.js");
+const CommentModel = require("../models/COMMENTS.js");
 const verifyToken = require("../controllers/VerifyingToken.js");
 
 router.post("/create", CreatePost);
@@ -149,5 +150,89 @@ router.get(`/user/save/:userId`, async (req, res) => {
     return res.json({message: "Posts Not Found", error});
   }
 });
+
+router.post("/comment", async (req, res) => {
+  const postId = req.body.postId;
+  const userId = req.body.userId;
+  const comment = req.body.comment;
+
+  try {
+    // const Post = await PostModel.findById(req.body.postId);
+    const newComment = new CommentModel({
+      userId: userId,
+      postId: postId,
+      comment: comment,
+      createdOn: Date.now(),
+    });
+
+    //
+    await newComment.save();
+
+    return res.json({
+      message: "Created comment Successfully.",
+      newComment,
+      success: true,
+    });
+  } catch (error) {
+    return res.json({message: "Failed", success: false});
+  }
+});
+router.post("/getComments", async (req, res) => {
+  const {postId} = req.body;
+
+  try {
+    const comments = await CommentModel.find({postId: postId});
+
+    const userId = comments.map((item) => {
+      console.log(item.userId);
+      return item.userId;
+    });
+
+    const users = await UserModel.find({_id: {$in: userId}});
+
+    const commentsWithUsers = comments.map((comment, index) => {
+      // const user = users.find((user) => user._id.equals(comment.userId));
+      const user = users.find((user) => user._id.equals(comment.userId));
+
+      return {
+        ...comment.toObject(),
+        user: user.toObject(),
+      };
+    });
+
+    return res.json({
+      users,
+      message: "Comments Find Successfully.",
+      comments: commentsWithUsers,
+      success: true,
+    });
+  } catch (error) {
+    return res.json({message: "Comments not Found.", success: false});
+  }
+});
+router.post("/comment/like", async (req, res) => {
+  const {userId, commentId} = req.body;
+
+  try {
+    const Comment = await CommentModel.findById(commentId);
+
+    console.log(Comment.likes);
+
+    if (Comment.likes.includes(userId)) {
+      const index = Comment.likes.indexOf(userId);
+      Comment.likes.splice(index, 1);
+      await Comment.save();
+      return res.json({message: "Like Deleted successfully.", success: true});
+    }
+
+    Comment.likes.push(userId);
+    await Comment.save();
+    return res.json({message: "Like Added Successfully.", success: true});
+  } catch (error) {
+    return res.json({message: "Failed.", success: false});
+  }
+});
+
+// Get Commnets
 
 module.exports = router;

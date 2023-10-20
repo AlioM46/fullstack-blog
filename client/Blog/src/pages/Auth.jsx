@@ -1,7 +1,6 @@
 import React from "react";
 import Register from "../components/Register";
 import Login from "../components/Login";
-import {useSelector} from "react-redux";
 
 const Auth = () => {
   return (

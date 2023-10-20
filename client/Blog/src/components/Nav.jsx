@@ -9,7 +9,7 @@ const Nav = () => {
   const [open, setOpen] = useState(false); // For profile
   const [show, setShow] = useState(false); // For Remove Account
   const [height, setHeight] = useState(0);
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies, setCookies, removeCookies] = useCookies(["access_token"]);
   const div = useRef();
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState({});
@@ -135,8 +135,8 @@ const Nav = () => {
             </a>
             <button
               onClick={() => {
-                setCookies(["access_token"], "");
-                window.localStorage.removeItem("userId");
+                removeCookies("access_token"),
+                  window.localStorage.removeItem("userId");
               }}
               className="  font-bold text-red-600 font-mono bg-[#eee]  flex justify-center items-center h-40 w-40 text-2xl "
             >
